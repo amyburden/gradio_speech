@@ -1,8 +1,9 @@
 import gradio as gr
 import speech_recognition as sr
 from gtts import gTTS
+# from deepseekv3 import Chat
+from llm_fake import Chat
 from qwen import Chat
-# from llm_fake import Chat
 import asyncio
 import librosa
 import numpy as np
@@ -71,7 +72,7 @@ async def text_to_speech(queue1, queue2):
 
 # 处理整个流程
 
-async def process_audio(audio_file_stt):
+async def process_audio(audio_file_stt, image_file=None):
     queue1 = asyncio.Queue(maxsize=20)  # 设置缓存队列的最大长度
     # queue2 = asyncio.Queue(maxsize=20)  # 设置缓存队列的最大长度
     queue3 = asyncio.Queue(maxsize=2)  # 设置缓存队列的最大长度
@@ -132,7 +133,7 @@ async def process_audio(audio_file_stt):
 # 创建Gradio界面
 iface = gr.Interface(
     fn=process_audio,
-    inputs=[gr.Audio(type="filepath")],
+    inputs=[gr.Audio(type="filepath"), gr.Image(type="filepath")],
     outputs=[gr.Textbox(label="stt的文本"),
              gr.Textbox(label="生成的文本"),
              gr.Audio(label="生成的语音", streaming=True, autoplay=True)],
