@@ -130,17 +130,19 @@ async def process_audio(audio_file_stt, image_file=None):
             break
         yield text, all_text, (sample_rate, float32_2_int16(response_audio))
 
-# 创建Gradio界面
-iface = gr.Interface(
-    fn=process_audio,
-    inputs=[gr.Audio(type="filepath"), gr.Image(type="filepath")],
-    outputs=[gr.Textbox(label="stt的文本"),
-             gr.Textbox(label="生成的文本"),
-             gr.Audio(label="生成的语音", streaming=True, autoplay=True)],
-    live=True
-)
-# 启动 Gradio 应用
-iface.launch(share=False)
+if __name__ == '__main__':
+
+    # 创建Gradio界面
+    iface = gr.Interface(
+        fn=process_audio,
+        inputs=[gr.Audio(type="filepath"), gr.Image(type="filepath")],
+        outputs=[gr.Textbox(label="stt的文本"),
+                 gr.Textbox(label="生成的文本"),
+                 gr.Audio(label="生成的语音", streaming=True, autoplay=True)],
+        live=True
+    )
+    # 启动 Gradio 应用
+    iface.launch(share=False)
 
 
 

@@ -1,7 +1,7 @@
 import os
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import TextStreamer
+from transformers import TextStreamer, TextIteratorStreamer
 
 
 class Chat:
@@ -27,7 +27,7 @@ class Chat:
         )
         model_inputs = self.tokenizer([text], return_tensors="pt").to(self.model.device)
 
-        streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
+        streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
         _ = self.model.generate(
             **model_inputs,
             max_new_tokens=512,
